@@ -1,0 +1,49 @@
+package com.shopsphere.user.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shopsphere.user.dto.UserRegisterRequest;
+import com.shopsphere.user.dto.UserRegisterResponse;
+import com.shopsphere.user.entity.User;
+import com.shopsphere.user.repository.UserRepository;
+
+@Service
+public class UserServiceImpl implements UserService{
+	
+	@Autowired
+	private UserRepository userRepository;
+
+	@Override
+	public UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest) {
+		try {
+			
+			if(userRegisterRequest != null) {
+				
+				User user = new User();
+				user.setFirstName(userRegisterRequest.getFirstName());
+				user.setLastName(userRegisterRequest.getLastName());
+				user.setEmail(userRegisterRequest.getEmail());
+				user.setPasswordHash(userRegisterRequest.getPassword());
+				user.setPhoneNumber(userRegisterRequest.getPhoneNumber());
+				
+				User savedUser = userRepository.save(user);
+				
+				UserRegisterResponse response = new UserRegisterResponse();
+				response.setId(savedUser.getId());
+			    response.setFirstName(savedUser.getFirstName());
+			    response.setLastName(savedUser.getLastName());
+			    response.setEmail(savedUser.getEmail());
+			    response.setPhoneNumber(savedUser.getPhoneNumber());
+			    response.setCreatedAt(savedUser.getCreatedAt());
+			    return response;
+			}
+			else {
+				throw new IllegalArgumentException("User registration request cannot be null")
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+}

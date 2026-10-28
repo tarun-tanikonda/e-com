@@ -1,0 +1,22 @@
+package com.shopsphere.user.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shopsphere.user.dto.UserRegisterRequest;
+import com.shopsphere.user.dto.UserRegisterResponse;
+import com.shopsphere.user.entity.User;
+import com.shopsphere.user.repository.UserRepository;
+
+@Service
+public class UserServiceImpl implements UserService{
+	
+	@Autowired
+	private UserRepository userRepository;
+
+	@Override
+	public UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest) {
+		return null;
+	}
+
+}

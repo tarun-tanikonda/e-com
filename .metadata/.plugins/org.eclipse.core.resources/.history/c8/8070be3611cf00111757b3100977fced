@@ -1,0 +1,5 @@
+package com.shopsphere.user.service;
+
+public interface UserService {
+
+}

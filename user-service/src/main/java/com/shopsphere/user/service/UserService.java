@@ -1,0 +1,14 @@
+package com.shopsphere.user.service;
+
+import org.springframework.stereotype.Service;
+
+import com.shopsphere.user.dto.UserRegisterRequest;
+import com.shopsphere.user.dto.UserRegisterResponse;
+import com.shopsphere.user.entity.User;
+
+@Service
+public interface UserService {
+
+	public UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest);
+
+}
