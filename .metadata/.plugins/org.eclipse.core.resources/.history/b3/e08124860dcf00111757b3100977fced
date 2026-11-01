@@ -1,5 +1,0 @@
-package com.shopsphere.user.dto;
-
-public class UserRegisterRequest {
-
-}
