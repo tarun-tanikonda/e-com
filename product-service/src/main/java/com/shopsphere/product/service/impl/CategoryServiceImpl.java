@@ -112,4 +112,15 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Category not found with ID: " + id));
 	}
+	
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<CategoryResponse> getCategoriesByStatus(Boolean active) {
+
+	    return categoryRepository.findByActive(active)
+	            .stream()
+	            .map(categoryMapper::toResponse)
+	            .toList();
+	}
 }

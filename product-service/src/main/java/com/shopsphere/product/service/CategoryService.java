@@ -16,5 +16,7 @@ public interface CategoryService {
 	public CategoryResponse  updateCategory(Long id, CategoryRequest request);
 
 	public CategoryResponse  updateCategoryStatus(Long id, Boolean active);
+	
+	List<CategoryResponse> getCategoriesByStatus(Boolean active);
 
 }
