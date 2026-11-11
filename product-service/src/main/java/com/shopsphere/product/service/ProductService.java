@@ -3,19 +3,22 @@ package com.shopsphere.product.service;
 import java.util.List;
 
 import com.shopsphere.product.dto.request.ProductRequest;
+import com.shopsphere.product.dto.response.PagedResponse;
 import com.shopsphere.product.dto.response.ProductResponse;
 import com.shopsphere.product.entity.ProductStatus;
 
 public interface ProductService {
-	
+
 	ProductResponse createProduct(ProductRequest request);
 
-    ProductResponse getProductById(Long id);
+	ProductResponse getProductById(Long id);
 
-    List<ProductResponse> getAllProducts();
+	List<ProductResponse> getAllProducts();
 
-    ProductResponse updateProduct(Long id, ProductRequest request);
+	ProductResponse updateProduct(Long id, ProductRequest request);
 
-    ProductResponse updateProductStatus(Long id, ProductStatus status);
+	ProductResponse updateProductStatus(Long id, ProductStatus status);
 
+	PagedResponse<ProductResponse> getPublishedCatalog(Long categoryId, String keyword, int page, int size,
+			String sortBy, String sortDir);
 }
