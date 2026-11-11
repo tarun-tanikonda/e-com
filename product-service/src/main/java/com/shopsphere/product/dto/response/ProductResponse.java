@@ -1,6 +1,8 @@
 package com.shopsphere.product.dto.response;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.shopsphere.product.entity.ProductStatus;
 
@@ -14,6 +16,8 @@ public class ProductResponse {
 	private ProductStatus status;
 	private Instant createdAt;
 	private Instant updatedAt;
+	
+	private List<ProductVariantResponse> variants = new ArrayList<>();
 
 	public ProductResponse() {
 	}
@@ -80,6 +84,14 @@ public class ProductResponse {
 
 	public void setUpdatedAt(Instant updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<ProductVariantResponse> getVariants() {
+		return variants;
+	}
+
+	public void setVariants(List<ProductVariantResponse> variants) {
+		this.variants = variants;
 	}
 	
 	

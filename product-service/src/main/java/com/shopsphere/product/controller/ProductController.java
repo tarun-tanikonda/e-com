@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,106 +23,114 @@ import jakarta.validation.Valid;
 @RestController
 //@RequestMapping("/products")
 public class ProductController {
-	
-	  private final ProductService productService;
 
-	    public ProductController(ProductService productService) {
-	        this.productService = productService;
-	    }
-	    
-	    //Create Product
-	    @PostMapping("/add")
-	    public ResponseEntity<?> createProduct(
-	            @Valid @RequestBody ProductRequest request) {
+	private final ProductService productService;
 
-	        try {
-	            ProductResponse response = productService.createProduct(request);
+	public ProductController(ProductService productService) {
+		this.productService = productService;
+	}
 
-	            return new ResponseEntity<>(response, HttpStatus.CREATED);
+	// Create Product
+	@PostMapping("/add")
+	public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequest request) {
 
-	        } catch (IllegalArgumentException e) {
-	            return ResponseEntity.badRequest().body(e.getMessage());
+		try {
+			ProductResponse response = productService.createProduct(request);
 
-	        } catch (Exception e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                    .body("Something went wrong while creating the product");
-	        }
-	    }
-	    
-	    //Get Product By ID
-	    @GetMapping("/get/{id}")
-	    public ResponseEntity<?> getProductById(@PathVariable Long id) {
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
 
-	        try {
-	            ProductResponse response = productService.getProductById(id);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
 
-	            return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Something went wrong while creating the product");
+		}
+	}
 
-	        } catch (IllegalArgumentException e) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-	                    .body(e.getMessage());
+	// Get Product By ID
+	@GetMapping("/get/{id}")
+	public ResponseEntity<?> getProductById(@PathVariable Long id) {
 
-	        } catch (Exception e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                    .body("Something went wrong while retrieving the product");
-	        }
-	    }
-	    
-	    
-	    //Get All Products
-	    @GetMapping("/getAll")
-	    public ResponseEntity<?> getAllProducts() {
+		try {
+			ProductResponse response = productService.getProductById(id);
 
-	        try {
-	            List<ProductResponse> response = productService.getAllProducts();
+			return ResponseEntity.ok(response);
 
-	            return ResponseEntity.ok(response);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 
-	        } catch (Exception e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                    .body("Something went wrong while retrieving products");
-	        }
-	    }
-	    
-	    //Update Product
-	    @PutMapping("/update/{id}")
-	    public ResponseEntity<?> updateProduct(
-	            @PathVariable Long id,
-	            @Valid @RequestBody ProductRequest request) {
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Something went wrong while retrieving the product");
+		}
+	}
 
-	        try {
-	            ProductResponse response = productService.updateProduct(id, request);
+	// Get All Products
+	@GetMapping("/getAll")
+	public ResponseEntity<?> getAllProducts() {
 
-	            return ResponseEntity.ok(response);
+		try {
+			List<ProductResponse> response = productService.getAllProducts();
 
-	        } catch (IllegalArgumentException e) {
-	            return ResponseEntity.badRequest().body(e.getMessage());
+			return ResponseEntity.ok(response);
 
-	        } catch (Exception e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                    .body("Something went wrong while updating the product");
-	        }
-	    }
-	    
-	    //Update Product Status
-	    @PatchMapping("/update/{id}/status")
-	    public ResponseEntity<?> updateProductStatus(
-	            @PathVariable Long id,
-	            @RequestParam ProductStatus status) {
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Something went wrong while retrieving products");
+		}
+	}
 
-	        try {
-	            ProductResponse response =
-	                    productService.updateProductStatus(id, status);
+	// Update Product
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequest request) {
 
-	            return ResponseEntity.ok(response);
+		try {
+			ProductResponse response = productService.updateProduct(id, request);
 
-	        } catch (IllegalArgumentException e) {
-	            return ResponseEntity.badRequest().body(e.getMessage());
+			return ResponseEntity.ok(response);
 
-	        } catch (Exception e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                    .body("Something went wrong while updating product status");
-	        }
-	    }
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Something went wrong while updating the product");
+		}
+	}
+
+	// Update Product Status
+	@PatchMapping("/update/{id}/status")
+	public ResponseEntity<?> updateProductStatus(@PathVariable Long id, @RequestParam ProductStatus status) {
+
+		try {
+			ProductResponse response = productService.updateProductStatus(id, status);
+
+			return ResponseEntity.ok(response);
+
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Something went wrong while updating product status");
+		}
+	}
+
+	// Public Catalogue: Search, Filter & Pagination
+	@GetMapping("/catalog")
+	public ResponseEntity<?> getPublishedCatalog(@RequestParam(required = false) Long categoryId,
+			@RequestParam(required = false) String keyword, @RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "createdAt") String sortBy,
+			@RequestParam(defaultValue = "desc") String sortDir) {
+		try {
+			com.shopsphere.product.dto.response.PagedResponse<ProductResponse> response = productService
+					.getPublishedCatalog(categoryId, keyword, page, size, sortBy, sortDir);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Something went wrong while retrieving the catalog");
+		}
+	}
 
 }
