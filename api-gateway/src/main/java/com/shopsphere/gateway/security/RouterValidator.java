@@ -18,6 +18,8 @@ public class RouterValidator {
             "/api/v1/users/register",
             "/api/v1/users/login",
             "/api/v1/users/auth",
+            "/api/user/register",
+            "/api/auth/login",
             "/actuator",
             "/v3/api-docs",
             "/swagger-ui"
