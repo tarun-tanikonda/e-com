@@ -1,2 +1,5 @@
 /.metadata/
 *.zip
+.DS_Store
+.idea/
+*.iml
