@@ -71,8 +71,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex, HttpServletRequest request) {
+    @ExceptionHandler({BadCredentialsException.class, org.springframework.security.core.AuthenticationException.class})
+    public ResponseEntity<ErrorResponse> handleBadCredentials(org.springframework.security.core.AuthenticationException ex, HttpServletRequest request) {
+        ex.printStackTrace();
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.UNAUTHORIZED.value(),
                 HttpStatus.UNAUTHORIZED.getReasonPhrase(),
@@ -125,11 +126,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex, HttpServletRequest request) {
+        ex.printStackTrace();
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 "INTERNAL_SERVER_ERROR",
-                "An unexpected internal error occurred",
+                ex.getMessage() != null ? ex.getMessage() : "An unexpected internal error occurred",
                 request.getRequestURI(),
                 getCorrelationId(request)
         );
