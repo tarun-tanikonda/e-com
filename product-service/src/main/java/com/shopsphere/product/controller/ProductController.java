@@ -128,8 +128,9 @@ public class ProductController {
 					.getPublishedCatalog(categoryId, keyword, page, size, sortBy, sortDir);
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("Something went wrong while retrieving the catalog");
+					.body("Something went wrong while retrieving the catalog: " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
 		}
 	}
 
