@@ -1,4 +1,3 @@
-
 package com.shopsphere.user.dto;
 
 import java.time.LocalDateTime;
@@ -14,6 +13,16 @@ public class UserRegisterResponse {
     private LocalDateTime createdAt;
 
     public UserRegisterResponse() {
+    }
+
+    public UserRegisterResponse(Long id, String firstName, String lastName, String email, String phoneNumber, String role, LocalDateTime createdAt) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {

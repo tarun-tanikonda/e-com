@@ -1,13 +1,14 @@
-
 package com.shopsphere.user.dto;
 
 import com.shopsphere.user.entity.User;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Registration request DTO per ShopSphere SRS FR-01.
+ * Supports open role registration policy (CUSTOMER or ADMIN).
+ */
 public class UserRegisterRequest {
 
     @NotBlank(message = "First name is required")
@@ -23,22 +24,29 @@ public class UserRegisterRequest {
     @Size(max = 150, message = "Email cannot exceed 150 characters")
     private String email;
 
-    // @NotBlank(message = "Password is required")
-    // @Size(min = 8, max = 72,message = "Password must contain between 8 and 72 characters")
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, max = 72, message = "Password must contain between 8 and 72 characters")
     private String password;
 
     @Size(max = 20, message = "Phone number cannot exceed 20 characters")
     private String phoneNumber;
 
-    @NotNull(message = "Role is required")
-    private User.Role role;
+    private User.Role role = User.Role.CUSTOMER;
 
-    public User.Role getRole() {
-        return role;
+    public UserRegisterRequest() {
     }
 
-    public void setRole(User.Role role) {
-        this.role = role;
+    public UserRegisterRequest(String firstName, String lastName, String email, String password, String phoneNumber) {
+        this(firstName, lastName, email, password, phoneNumber, User.Role.CUSTOMER);
+    }
+
+    public UserRegisterRequest(String firstName, String lastName, String email, String password, String phoneNumber, User.Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.role = (role != null) ? role : User.Role.CUSTOMER;
     }
 
     public String getFirstName() {
@@ -79,5 +87,13 @@ public class UserRegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public User.Role getRole() {
+        return role;
+    }
+
+    public void setRole(User.Role role) {
+        this.role = role;
     }
 }
