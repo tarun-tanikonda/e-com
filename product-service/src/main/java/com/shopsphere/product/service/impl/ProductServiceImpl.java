@@ -172,8 +172,14 @@ public class ProductServiceImpl implements ProductService {
 		String cleanKeyword = (keyword != null && !keyword.trim().isEmpty()) ? keyword.trim() : null;
 
 		// 4. Query repository - strictly filtering by PUBLISHED status
-		org.springframework.data.domain.Page<Product> productPage = productRepository
-				.searchCatalog(ProductStatus.PUBLISHED, categoryId, cleanKeyword, pageable);
+		org.springframework.data.domain.Page<Product> productPage;
+		if (categoryId == null && cleanKeyword == null) {
+			productPage = productRepository.findByStatus(ProductStatus.PUBLISHED, pageable);
+		} else if (cleanKeyword == null) {
+			productPage = productRepository.findByCategoryIdAndStatus(categoryId, ProductStatus.PUBLISHED, pageable);
+		} else {
+			productPage = productRepository.searchCatalog(ProductStatus.PUBLISHED, categoryId, cleanKeyword, pageable);
+		}
 
 		// 5. Map entities to DTOs
 		List<ProductResponse> content = productPage.getContent().stream().map(productMapper::toResponse).toList();

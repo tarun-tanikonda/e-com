@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -73,8 +71,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler({BadCredentialsException.class, InternalAuthenticationServiceException.class})
-    public ResponseEntity<ErrorResponse> handleBadCredentials(AuthenticationException ex, HttpServletRequest request) {
+    @ExceptionHandler({BadCredentialsException.class, org.springframework.security.core.AuthenticationException.class})
+    public ResponseEntity<ErrorResponse> handleBadCredentials(org.springframework.security.core.AuthenticationException ex, HttpServletRequest request) {
+        ex.printStackTrace();
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.UNAUTHORIZED.value(),
                 HttpStatus.UNAUTHORIZED.getReasonPhrase(),
@@ -128,15 +127,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex, HttpServletRequest request) {
         ex.printStackTrace();
-        String detailMessage = ex.getClass().getSimpleName() + ": " + ex.getMessage();
-        if (ex.getCause() != null) {
-            detailMessage += " (Cause: " + ex.getCause().getClass().getSimpleName() + ": " + ex.getCause().getMessage() + ")";
-        }
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 "INTERNAL_SERVER_ERROR",
-                detailMessage,
+                ex.getMessage() != null ? ex.getMessage() : "An unexpected internal error occurred",
                 request.getRequestURI(),
                 getCorrelationId(request)
         );
