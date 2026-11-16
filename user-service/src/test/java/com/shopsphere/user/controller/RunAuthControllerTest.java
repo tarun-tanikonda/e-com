@@ -10,8 +10,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
-import com.shopsphere.user.dto.UserRegisterRequest;
-import com.shopsphere.user.dto.UserRegisterResponse;
+import com.shopsphere.user.dto.request.UserRegisterRequest;
+import com.shopsphere.user.dto.response.UserRegisterResponse;
 import com.shopsphere.user.dto.request.LoginRequest;
 import com.shopsphere.user.dto.request.UserProfileUpdateRequest;
 import com.shopsphere.user.dto.request.UserStatusUpdateRequest;

@@ -1,4 +1,4 @@
-package com.shopsphere.user.dto;
+package com.shopsphere.user.dto.response;
 
 import java.time.LocalDateTime;
 

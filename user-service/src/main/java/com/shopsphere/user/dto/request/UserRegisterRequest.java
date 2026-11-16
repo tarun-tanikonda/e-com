@@ -1,4 +1,4 @@
-package com.shopsphere.user.dto;
+package com.shopsphere.user.dto.request;
 
 import com.shopsphere.user.entity.User;
 import jakarta.validation.constraints.Email;

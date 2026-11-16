@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
-import com.shopsphere.user.dto.UserRegisterRequest;
-import com.shopsphere.user.dto.UserRegisterResponse;
+import com.shopsphere.user.dto.request.UserRegisterRequest;
+import com.shopsphere.user.dto.response.UserRegisterResponse;
 import com.shopsphere.user.dto.request.UserProfileUpdateRequest;
 import com.shopsphere.user.dto.request.UserStatusUpdateRequest;
 import com.shopsphere.user.dto.response.UserProfileResponse;
