@@ -5,8 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.shopsphere.user.dto.UserRegisterRequest;
-import com.shopsphere.user.dto.UserRegisterResponse;
+import com.shopsphere.user.dto.request.UserRegisterRequest;
+import com.shopsphere.user.dto.response.UserRegisterResponse;
 import com.shopsphere.user.dto.request.UserProfileUpdateRequest;
 import com.shopsphere.user.dto.response.UserProfileResponse;
 import com.shopsphere.user.entity.User;

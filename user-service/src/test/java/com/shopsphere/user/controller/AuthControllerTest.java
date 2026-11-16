@@ -11,8 +11,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
-import com.shopsphere.user.dto.UserRegisterRequest;
-import com.shopsphere.user.dto.UserRegisterResponse;
+import com.shopsphere.user.dto.request.UserRegisterRequest;
+import com.shopsphere.user.dto.response.UserRegisterResponse;
 import com.shopsphere.user.dto.request.LoginRequest;
 import com.shopsphere.user.dto.response.LoginResponse;
 import com.shopsphere.user.entity.User;

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shopsphere.user.dto.UserRegisterRequest;
-import com.shopsphere.user.dto.UserRegisterResponse;
+import com.shopsphere.user.dto.request.UserRegisterRequest;
+import com.shopsphere.user.dto.response.UserRegisterResponse;
 import com.shopsphere.user.dto.request.UserProfileUpdateRequest;
 import com.shopsphere.user.dto.request.UserStatusUpdateRequest;
 import com.shopsphere.user.dto.response.UserProfileResponse;
@@ -41,6 +41,13 @@ public class UserController {
     public ResponseEntity<UserRegisterResponse> registerUser(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
         UserRegisterResponse response = userService.registerUser(userRegisterRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserProfileResponse> getUserById(@PathVariable("userId") Long userId) {
+        UserProfileResponse response = userService.getUserProfile(userId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")
@@ -73,22 +80,14 @@ public class UserController {
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
         UserProfileResponse response = userService.updateUserProfile(userId, request);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserProfileResponse> getUserById(@PathVariable Long userId) {
-        UserProfileResponse response = userService.getUserProfile(userId);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{userId}/status")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserProfileResponse> updateUserStatus(
-            @PathVariable Long userId,
+            @PathVariable("userId") Long userId,
             @Valid @RequestBody UserStatusUpdateRequest request) {
         UserProfileResponse response = userService.updateUserStatus(userId, request.getEnabled());
         return ResponseEntity.ok(response);

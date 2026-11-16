@@ -38,20 +38,24 @@ public class AuthController {
 
     @PostMapping({"/login", "/auth/login"})
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        String email = loginRequest.getEmail().trim().toLowerCase();
+
         // Authenticate credentials using Spring Security
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
+                        email,
                         loginRequest.getPassword()
                 )
         );
 
         // Fetch User entity to retrieve ID and assigned Role
-        User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + loginRequest.getEmail()));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         // Generate JWT token containing userId, role, and email claims
         String token = jwtUtil.generateToken(user);
+
+        String roleName = (user.getRole() != null) ? "ROLE_" + user.getRole().name() : "ROLE_CUSTOMER";
 
         LoginResponse response = new LoginResponse(
                 true,
@@ -60,7 +64,7 @@ public class AuthController {
                 "Bearer",
                 user.getId(),
                 user.getEmail(),
-                "ROLE_" + user.getRole().name(),
+                roleName,
                 jwtUtil.getExpirationTime()
         );
 
